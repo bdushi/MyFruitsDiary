@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="fruit"
+            type="al.bruno.fruit.diary.model.Fruit" />
+        <variable
+            name="onClick"
+            type="al.bruno.fruit.diary.listener.ViewOnClickListener&lt;al.bruno.fruit.diary.model.Fruit&gt;" />
+        <import type="al.bruno.fruit.diary.binding.utils.Converter"/>
+    </data>
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_8">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dimen_4">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/add_fruit_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                bind:img="@{fruit.image}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/add_fruit_type"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/add_fruit_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{@string/name(fruit.type)}"
+                android:padding="@dimen/dimen_4"
+                style="@style/Entries.Details"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_fruit_image"
+                app:layout_constraintBottom_toTopOf="@+id/add_fruit_vitamins"
+                app:layout_constraintEnd_toEndOf="parent"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/add_fruit_vitamins"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{@string/vitamins(fruit.vitamins)}"
+                android:padding="@dimen/dimen_4"
+                style="@style/Entries.Details"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_fruit_type"
+                app:layout_constraintBottom_toTopOf="@+id/add_fruit_amount_layout"
+                app:layout_constraintEnd_toEndOf="parent"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/add_fruit_amount_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Design.TextInputLayout"
+                app:error="@{fruit.amount == 0 ? @string/please_fill_the_field : null}"
+                app:layout_constraintTop_toBottomOf="@+id/add_fruit_image"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:selectAllOnFocus="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:hint="@string/amount_hint"
+                    android:text="@={Converter.INSTANCE.intToString(fruit.amount)}"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/add_fruit_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ok"
+                android:onClick="@{(v) -> onClick.onClick(v, fruit)}"
+                android:enabled="@{fruit.amount != 0}"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                app:layout_constraintTop_toBottomOf="@+id/add_fruit_amount_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/add_fruit_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel"
+                android:onClick="@{(v) -> onClick.onClick(v, fruit)}"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                app:layout_constraintEnd_toStartOf="@+id/add_fruit_ok"
+                app:layout_constraintTop_toTopOf="@+id/add_fruit_ok"
+                app:layout_constraintBottom_toBottomOf="@+id/add_fruit_ok"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

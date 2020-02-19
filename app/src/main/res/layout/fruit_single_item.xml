@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="fruit"
+            type="al.bruno.fruit.diary.model.Fruit" />
+    </data>
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_8">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dimen_4">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/fruit_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{@string/amount(fruit.amount)}"
+                android:padding="@dimen/dimen_4"
+                style="@style/Entries.Details"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/fruit_vitamins"
+                app:layout_constraintEnd_toEndOf="parent"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/fruit_vitamins"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{@string/vitamins(fruit.vitamins)}"
+                android:padding="@dimen/dimen_4"
+                style="@style/Entries.Details"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fruit_type"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

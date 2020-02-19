@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="onClick"
+            type="al.bruno.fruit.diary.listener.ViewOnClickListener&lt;al.bruno.fruit.diary.model.Entries&gt;" />
+        <variable
+            name="entries"
+            type="al.bruno.fruit.diary.model.Entries" />
+        <variable
+            name="viewModel"
+            type="al.bruno.fruit.diary.ui.detail.DetailViewModel" />
+        <import type="android.view.View"/>
+    </data>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:refreshing="@{viewModel.loading}"
+        app:enabled="@{viewModel.loading}"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/dimen_8"
+            android:orientation="vertical">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/details_entries_date"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:text="@{entries.date()}"
+                style="@style/Entries.Date.Header"
+                app:layout_constraintEnd_toStartOf="@id/details_entries_remove"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/details_entries_remove"
+                app:layout_constraintBottom_toBottomOf="@id/details_entries_remove"/>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/details_entries_remove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dimen_12"
+                android:onClick="@{(v) -> onClick.onClick(v, entries)}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/details_entries_date"
+                app:layout_constraintBottom_toTopOf="@+id/details_fruits"
+                app:srcCompat="@drawable/ic_clear_black_24dp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/details_add_fruit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_fruits_for_this_entries"
+                android:visibility="@{entries.fruit.empty ? View.VISIBLE : View.GONE}"
+                android:onClick="@{(v) -> onClick.onClick(v, entries)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/details_entries_date" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/details_fruits"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:adapter="@{viewModel.adapter}"
+                android:visibility="@{entries.fruit.empty ? View.GONE : View.VISIBLE}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/details_entries_remove" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/details_fab_add_fruit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{(v) -> onClick.onClick(v, entries)}"
+                android:src="@drawable/ic_add_black_24dp"
+                android:layout_marginBottom="@dimen/dimen_30"
+                android:layout_marginEnd="@dimen/dimen_20"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</layout>

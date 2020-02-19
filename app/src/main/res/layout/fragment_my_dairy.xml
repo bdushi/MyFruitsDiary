@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="viewModel"
+            type="al.bruno.fruit.diary.ui.my.diary.MyDiaryViewModel" />
+        <variable
+            name="refreshListener"
+            type="androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener" />
+        <variable
+            name="onClick"
+            type="android.view.View.OnClickListener" />
+    </data>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:onRefreshListener="@{refreshListener::onRefresh}"
+        app:refreshing="@{viewModel.loading}">
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/text_dashboard"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adapter="@{viewModel.adapter}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/add_entries"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{onClick::onClick}"
+                android:layout_marginEnd="@dimen/dimen_20"
+                android:layout_marginBottom="@dimen/dimen_20"
+                android:src="@drawable/ic_add_black_24dp"
+                android:layout_gravity="end|bottom"/>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</layout>

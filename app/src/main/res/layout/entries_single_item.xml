@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="entries"
+            type="al.bruno.fruit.diary.model.Entries" />
+        <variable
+            name="onItemClick"
+            type="al.bruno.fruit.diary.listener.OnItemClickListener&lt;al.bruno.fruit.diary.model.Entries&gt;" />
+    </data>
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_8">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/dimen_4"
+            android:onClick="@{(v) -> onItemClick.onItemClick(entries)}">
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                style="@style/Entries.Date.Header"
+                android:text="@{entries.date()}"/>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dimen_12"
+                app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp"/>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

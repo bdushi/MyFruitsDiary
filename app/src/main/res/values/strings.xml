@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">FruitsDiary</string>
+    <string name="title_my_dairy">My Dairy</string>
+    <string name="title_about">About</string>
+    <string name="title_details">Detail</string>
+    <string name="title_add_fruit">Add Fruit</string>
+    <string name="vitamins">Vitamins: %1$s</string>
+    <string name="amount">Amount: %1$s</string>
+    <string name="name">Fruit: %1$s</string>
+    <string name="no_fruits_for_this_entries">There are no fruits for this date\nPress + button to enter new Fruit</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="amount_hint">Amount</string>
+    <string name="please_fill_the_field">Please fill the filed</string>
+</resources>
