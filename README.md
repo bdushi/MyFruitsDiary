@@ -12,18 +12,24 @@ Prerequisites
 - Latest Android Build Tools
 - Android Support Repository
 
-Getting started
+Architecture
 ---------------
 
-This sample uses the Gradle build system.
+The application is build on top of the Android Architecture component using MVVM pattern, following
+Android Jetpack suite of libraries, tools, and guidance.
 
-1. Download the samples by cloning this repository or downloading an archived
-  snapshot. (See the options at the top of the page.)
-1. In Android Studio, create a new project and choose the "Import non-Android Studio project" or
-  "Import Project" option.
-1. Select the `CurrentPlaceDetailsOnMap` directory that you downloaded with this repository.
-1. If prompted for a gradle configuration, accept the default settings.
-  Alternatively use the "gradlew build" command to build the project directly.
-1. Add your API key to your app's `gradle.properties` file.
-  (For information on getting an API key, see the
-  [documentation](https://developers.google.com/maps/documentation/android-api/signup).)
+Libraries and Tools
+---------------
+- AppCompat
+- Data Binding allows to bind UI components in your layouts to data sources in your app using a
+  declarative format rather than programmatically
+- Lifecycles provides classes and interfaces that let you build lifecycle-aware components—which are
+  components that can automatically adjust their behavior based on the current lifecycle state of an
+  activity or fragment
+- LiveData for observing data from ViewModel and Room and update the UI
+- Navigation for navigation and interaction
+- Room for data persisting
+- ViewModel for store and manage UI-related data in a lifecycle conscious way
+- Retrofit for consuming WebApi
+- Dagger for dependency injection
+- Coroutines for asynchronous programming
