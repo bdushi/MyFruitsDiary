@@ -7,6 +7,7 @@ import al.bruno.fruit.diary.data.source.EntriesRepository
 import al.bruno.fruit.diary.data.source.FruitRepository
 import al.bruno.fruit.diary.databinding.AddFruitSingleItemBinding
 import al.bruno.fruit.diary.listener.OnItemClickListener
+import al.bruno.fruit.diary.model.Basket
 import al.bruno.fruit.diary.model.Fruit
 import al.bruno.fruit.diary.util.ErrorHandler
 import androidx.lifecycle.LiveData
@@ -18,19 +19,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import java.util.concurrent.TimeoutException
 import javax.inject.Inject
 import javax.inject.Singleton
 
 class AddFruitViewModel @Inject constructor(
     private val fruitRepository: FruitRepository,
     private val entriesRepository: EntriesRepository,
-    private val errorHandler: ErrorHandler) : ViewModel() {
+    private val errorHandler: ErrorHandler,
+    private val basket: Basket) : ViewModel() {
 
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
-
-    private val _success = MutableLiveData<String>()
-    val success: LiveData<String> = _success
 
     lateinit var onItemSelectedListener: OnItemClickListener<Fruit>
     val adapter = CustomListAdapter(
@@ -57,16 +57,18 @@ class AddFruitViewModel @Inject constructor(
         }
     }
 
-    fun entries(entryId: Long?, fruitId: Long?, nrOfFruit: Int?) {
+    fun entries(entryId: Long?, f: Fruit?) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val response = entriesRepository.entries(entryId, fruitId, nrOfFruit)
+                val response = entriesRepository.entries(entryId, fruitId = f?.id, nrOfFruit = f?.amount)
                 if(response.isSuccessful) {
-                    _success.postValue(response.message())
+                    basket.fruit = f
                 } else {
                     _error.postValue(errorHandler.parseError(response).message)
                 }
             } catch (ex: HttpException) {
+                _error.postValue(ex.message)
+            } catch (ex: TimeoutException) {
                 _error.postValue(ex.message)
             }
         }

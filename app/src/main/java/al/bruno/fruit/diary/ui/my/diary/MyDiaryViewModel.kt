@@ -21,6 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.util.*
+import java.util.concurrent.TimeoutException
 import javax.inject.Inject
 
 class MyDiaryViewModel @Inject constructor(
@@ -50,6 +51,8 @@ class MyDiaryViewModel @Inject constructor(
                 }
             } catch (ex: HttpException) {
                 _error.postValue(ex.message)
+            } catch (ex: TimeoutException) {
+                _error.postValue(ex.message)
             }
         }
 
@@ -65,8 +68,11 @@ class MyDiaryViewModel @Inject constructor(
                     _loading.postValue(false)
                     _error.postValue(errorHandler.parseError(response = entriesRepository.entries()).message)
                 }
-            } catch (ex: HttpException) {
+            }
+            catch (ex: HttpException) {
                 _loading.postValue(false)
+                _error.postValue(ex.message)
+            } catch (ex: TimeoutException) {
                 _error.postValue(ex.message)
             }
         }

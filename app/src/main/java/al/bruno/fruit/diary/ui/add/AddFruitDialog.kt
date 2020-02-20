@@ -19,6 +19,10 @@ import androidx.navigation.fragment.findNavController
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
+/**
+ *
+ */
+
 class AddFruitDialog : DialogFragment() {
 
     private var fruit: Fruit? = null
@@ -26,15 +30,11 @@ class AddFruitDialog : DialogFragment() {
     @Inject
     lateinit var viewModelProvider: ViewModelProvider.Factory
 
-    /**
-     * https://developer.android.com/guide/navigation/navigation-programmatic#kotlin
-     */
-    // findNavController().getBackStackEntry(R.id.mobile_navigation)
+    // https://developer.android.com/guide/navigation/navigation-programmatic#kotlin
+    // private val addFruitViewModel:AddFruitViewModel by navGraphViewModels(R.id.mobile_navigation)
     private val addFruitViewModel by lazy {
         ViewModelProvider(findNavController().getBackStackEntry(R.id.mobile_navigation).viewModelStore, viewModelProvider)[AddFruitViewModel::class.java]
     }
-
-    //private val addFruitViewModel:AddFruitViewModel by navGraphViewModels(R.id.mobile_navigation)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,11 +56,7 @@ class AddFruitDialog : DialogFragment() {
             override fun onClick(v: View, t: Fruit) {
                 when (v.id) {
                     R.id.add_fruit_ok -> {
-                        addFruitViewModel.entries(
-                            entryId = entries?.id,
-                            fruitId = fruit?.id,
-                            nrOfFruit = fruit?.amount
-                        )
+                        addFruitViewModel.entries(entries?.id, fruit)
                         dismiss()
                     }
                     R.id.add_fruit_cancel -> {
@@ -70,10 +66,6 @@ class AddFruitDialog : DialogFragment() {
             }
         }
         return dialogAddFruit.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onAttach(context: Context) {

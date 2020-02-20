@@ -8,7 +8,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-data class Entries(val id: Long, val date: Date, val fruit: List<Fruit>?) : Section<Entries, Fruit>, Parcelable {
+data class Entries(val id: Long, val date: Date, val fruit: ArrayList<Fruit>?) : Section<Entries, Fruit>, Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
         Date(parcel.readLong()),

@@ -4,6 +4,8 @@ import al.bruno.fruit.diary.data.source.local.AppDatabase
 import al.bruno.fruit.diary.data.source.local.dao.FruitDao
 import al.bruno.fruit.diary.data.source.remote.service.EntriesService
 import al.bruno.fruit.diary.data.source.remote.service.FruitService
+import al.bruno.fruit.diary.model.Basket
+import al.bruno.fruit.diary.model.Fruit
 import al.bruno.fruit.diary.util.ErrorHandler
 import android.app.Application
 import androidx.room.Room
@@ -61,6 +63,11 @@ class AppModule {
         )
     }
 
+    @Provides
+    @Singleton
+    fun basket(): Basket {
+        return Basket()
+    }
     @Provides
     @Singleton
     fun errorHandler(retrofit: Retrofit): ErrorHandler {

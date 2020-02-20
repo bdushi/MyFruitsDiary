@@ -22,9 +22,7 @@ import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
 /**
- * A simple [Fragment] subclass.
- * Use the [AddFruitFragment.newInstance] factory method to
- * create an instance of this fragment.
+ *
  */
 class AddFruitFragment :  MainFragment() {
     @Inject

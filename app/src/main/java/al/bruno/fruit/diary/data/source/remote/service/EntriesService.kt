@@ -14,8 +14,8 @@ interface EntriesService {
     @DELETE("entries")
     suspend fun delete() : Response<ResponseBody>
 
-    @DELETE("entries")
-    suspend fun delete(@Query("id") entryId: Long) : Response<ResponseBody>
+    @DELETE("entries/{entryId}")
+    suspend fun delete(@Path("entryId") entryId: Long) : Response<ResponseBody>
 
     @JvmSuppressWildcards
     @POST("entries")

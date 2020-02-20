@@ -21,22 +21,22 @@ class DetailFragment : MainFragment() {
     @Inject
     lateinit var viewModelProvider: ViewModelProvider.Factory
 
-//    private val backStackEntry = findNavController().getBackStackEntry(R.id.nav_host_fragment)
-//    private val vm:DetailViewModel by navGraphViewModels(R.id.nav_host_fragment)
     private val detailViewModel by lazy {
         ViewModelProvider(this, viewModelProvider)[DetailViewModel::class.java]
     }
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        detailViewModel.success.observe(this, Observer {
+
+        /**
+         * @param viewLifecycleOwner Get a {@link LifecycleOwner} that represents the {@link #getView() Fragment's View}
+         * lifecycle. In most cases, this mirrors the lifecycle of the Fragment
+         */
+
+        detailViewModel.success.observe(viewLifecycleOwner, Observer {
             findNavController().popBackStack()
         })
-        detailViewModel.error.observe(this, Observer {
+        detailViewModel.error.observe(viewLifecycleOwner, Observer {
             Snackbar.make(view, it, Snackbar.LENGTH_SHORT).show()
         })
     }
@@ -50,7 +50,9 @@ class DetailFragment : MainFragment() {
         arguments?.let {
             val entries: Entries? = it.getParcelable(ENTRIES)
             fragmentDetailsBinding.entries = entries
-            detailViewModel.fruit(entries?.fruit)
+            entries?.fruit?.let { fruits ->
+                detailViewModel.fruit(fruits)
+            }
         }
         fragmentDetailsBinding.viewModel = detailViewModel
         fragmentDetailsBinding.lifecycleOwner = this

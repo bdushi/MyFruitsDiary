@@ -33,7 +33,7 @@
                 android:id="@+id/add_fruit_type"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@{@string/name(fruit.type)}"
+                android:text="@{@string/fruit(fruit.type)}"
                 android:padding="@dimen/dimen_4"
                 style="@style/Entries.Details"
                 app:layout_constraintStart_toEndOf="@id/add_fruit_image"

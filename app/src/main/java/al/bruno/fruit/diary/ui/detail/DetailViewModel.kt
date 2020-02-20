@@ -5,6 +5,7 @@ import al.bruno.fruit.diary.adapter.BindingData
 import al.bruno.fruit.diary.adapter.CustomListAdapter
 import al.bruno.fruit.diary.data.source.EntriesRepository
 import al.bruno.fruit.diary.databinding.FruitSingleItemBinding
+import al.bruno.fruit.diary.model.Basket
 import al.bruno.fruit.diary.model.Fruit
 import al.bruno.fruit.diary.util.ErrorHandler
 import androidx.lifecycle.LiveData
@@ -16,11 +17,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.util.*
+import java.util.concurrent.TimeoutException
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class DetailViewModel @Inject constructor(
     private val entriesRepository: EntriesRepository,
-    private val errorHandler: ErrorHandler) : ViewModel() {
+    private val errorHandler: ErrorHandler,
+    private val basket: Basket) : ViewModel() {
 
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
@@ -30,6 +34,9 @@ class DetailViewModel @Inject constructor(
 
     private val _loading = MutableLiveData<Boolean>()
     var loading: LiveData<Boolean> = _loading
+
+    private val _empty = MutableLiveData<Boolean>()
+    var empty: LiveData<Boolean> = _empty
 
     val adapter = CustomListAdapter(
         R.layout.fruit_single_item,
@@ -46,9 +53,22 @@ class DetailViewModel @Inject constructor(
                 oldItem == newItem
         })
 
-    fun fruit(fruit: List<Fruit>?) {
-        adapter.submitList(fruit)
+    fun fruit(fruits: ArrayList<Fruit>) {
+        if(fruits.isEmpty()) {
+            basket.fruit?.let { fruits.add(it) }
+        } else {
+            for (f in fruits) {
+                if (f.id == basket.fruit?.id) {
+                    basket.fruit?.let {
+                        fruits[fruits.indexOf(f)] = it
+                    }
+                }
+            }
+        }
+        adapter.submitList(fruits)
+        _empty.postValue(adapter.itemCount > 0)
     }
+
 
     fun delete(entryId: Long) {
         _loading.postValue(true)
@@ -62,6 +82,8 @@ class DetailViewModel @Inject constructor(
                     _error.postValue(errorHandler.parseError(response = response).message)
                 }
             } catch (ex: HttpException) {
+                _error.postValue(ex.message)
+            } catch (ex: TimeoutException) {
                 _error.postValue(ex.message)
             }
         }

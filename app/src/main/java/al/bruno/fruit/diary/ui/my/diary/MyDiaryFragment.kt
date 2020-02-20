@@ -38,11 +38,14 @@ class MyDiaryFragment : MainFragment() {
         // load entries
         myDiaryViewModel.entries()
         fragmentMyDairyBinding.viewModel = myDiaryViewModel
+
+        // MyDiaryFragment lifecycle used for observing changes of LiveData in this binding
         fragmentMyDairyBinding.lifecycleOwner = this
+        // get refresh event from SwipeRefreshLayout
         fragmentMyDairyBinding.setRefreshListener {
-            // refresh entries
             myDiaryViewModel.entries()
         }
+
         fragmentMyDairyBinding.setOnClick {
             val builder : MaterialDatePicker.Builder<*> = MaterialDatePicker.Builder.datePicker() // 1
             val picker : MaterialDatePicker<*> = builder.build()  // 2
@@ -54,10 +57,21 @@ class MyDiaryFragment : MainFragment() {
         return fragmentMyDairyBinding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        myDiaryViewModel.error.observe(this, Observer {
-            Snackbar.make(view, it, Snackbar.LENGTH_SHORT).show()
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        /**
+         * @param viewLifecycleOwner unsubscribe from LiveData observer
+         * @param myDiaryViewModel.error subscribe to LiveData error
+         */
+        myDiaryViewModel.error.observe(viewLifecycleOwner, Observer { error ->
+            activity?.let {
+                Snackbar.make(it.findViewById(android.R.id.content), error, Snackbar.LENGTH_SHORT).show()
+            }
         })
+
+        /**
+         * @param myDiaryViewModel.onItemSelectedListener get click event from list view single ite
+         */
         myDiaryViewModel.onItemSelectedListener = object : OnItemClickListener<Entries> {
             override fun onItemClick(t: Entries) {
                 findNavController()

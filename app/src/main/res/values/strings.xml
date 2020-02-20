@@ -6,7 +6,7 @@
     <string name="title_add_fruit">Add Fruit</string>
     <string name="vitamins">Vitamins: %1$s</string>
     <string name="amount">Amount: %1$s</string>
-    <string name="name">Fruit: %1$s</string>
+    <string name="fruit">Fruit: %1$s</string>
     <string name="no_fruits_for_this_entries">There are no fruits for this date\nPress + button to enter new Fruit</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
