@@ -1,8 +1,9 @@
 My Fruit Dairy
 =====================================================
 
-This sample goes hand in hand with a tutorial for the Google Maps Android API:
-[Select Current Place and Show Details on a Map](https://developers.google.com/maps/documentation/android-api/current-place-tutorial).
+My Fruits Diary is a mobile application where you can store the number of fruits you have eaten
+each day. The user is able to add date entries and for each date choose the fruits eaten on that
+specific day. The application consumes a webservice where the current entries and fruits are located.
 
 Prerequisites
 --------------
