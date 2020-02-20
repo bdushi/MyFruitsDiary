@@ -63,6 +63,7 @@ Improvement
 - Testing
 - Retrofit Coroutines batter error handling
 - Application State management
+- Data Synchronization
 
 References
 ---------------
