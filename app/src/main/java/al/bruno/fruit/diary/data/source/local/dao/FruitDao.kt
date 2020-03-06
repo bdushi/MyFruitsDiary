@@ -1,6 +1,7 @@
 package al.bruno.fruit.diary.data.source.local.dao
 
 import al.bruno.fruit.diary.model.Fruit
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
@@ -24,4 +25,9 @@ interface FruitDao {
 
     @Delete
     fun delete(fruit: Fruit)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun save(fruits: List<Fruit>)
+    @Query("SELECT * FROM fruit")
+    fun load(): LiveData<List<Fruit>>
 }

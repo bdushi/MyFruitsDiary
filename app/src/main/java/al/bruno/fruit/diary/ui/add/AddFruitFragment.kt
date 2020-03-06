@@ -48,6 +48,11 @@ class AddFruitFragment :  MainFragment() {
         val fragmentAddFruitBinding = FragmentAddFruitBinding.inflate(inflater)
         fragmentAddFruitBinding.lifecycleOwner = this
         fragmentAddFruitBinding.viewModel = addFruitViewModel
+        addFruitViewModel.load().observe(viewLifecycleOwner, Observer {
+            for (f in it) {
+                Log.d(AddFruitFragment::class.java.name, f.toString())
+            }
+        })
         return fragmentAddFruitBinding.root
     }
 

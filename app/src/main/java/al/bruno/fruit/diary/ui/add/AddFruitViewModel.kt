@@ -57,6 +57,10 @@ class AddFruitViewModel @Inject constructor(
         }
     }
 
+    fun load() : LiveData<List<Fruit>> {
+        return fruitRepository.fruit()
+    }
+
     fun entries(entryId: Long?, f: Fruit?) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
