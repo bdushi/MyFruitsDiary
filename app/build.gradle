@@ -24,7 +24,25 @@ android {
             }
         }
     }
+    android {
+        sourceSets {
+            String sharedTestDir = 'src/sharedTest/java'
+            test {
+                java.srcDir sharedTestDir
+            }
+            androidTest {
+                java.srcDir sharedTestDir
+            }
+        }
+    }
     buildTypes {
+        debug {
+            minifyEnabled false
+            testCoverageEnabled true
+            useProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguardTest-rules.pro'
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -43,22 +61,10 @@ android {
         jvmTarget = "1.8"
     }
 
-    sourceSets {
-        main {
-            java {
-                srcDirs 'src/main/java', 'src/main/java/sharedTest'
-            }
-        }
-    }
-
-//    android {
-//        sourceSets {
-//            String sharedTestDir = 'src/sharedTest/java'
-//            test {
-//                java.srcDir sharedTestDir
-//            }
-//            androidTest {
-//                java.srcDir sharedTestDir
+//    sourceSets {
+//        main {
+//            java {
+//                srcDirs 'src/main/java', 'src/main/java/sharedTest'
 //            }
 //        }
 //    }

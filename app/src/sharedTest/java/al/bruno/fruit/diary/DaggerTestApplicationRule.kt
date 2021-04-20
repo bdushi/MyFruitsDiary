@@ -1,6 +1,5 @@
 package al.bruno.fruit.diary
 
-import al.bruno.fruit.diary.di.DaggerTestComponent
 import al.bruno.fruit.diary.di.TestComponent
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
