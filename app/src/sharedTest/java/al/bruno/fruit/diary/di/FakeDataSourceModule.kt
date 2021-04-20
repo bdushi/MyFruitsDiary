@@ -8,7 +8,6 @@ import al.bruno.fruit.diary.data.source.local.FruitLocalDataSource
 import al.bruno.fruit.diary.data.source.remote.FruitRemoteDataSource
 import dagger.Module
 import dagger.Reusable
-import javax.inject.Singleton
 
 @Module
 abstract class FakeDataSourceModule {

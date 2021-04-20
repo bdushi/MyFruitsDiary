@@ -6,11 +6,11 @@ import androidx.test.runner.AndroidJUnitRunner
 
 /**
  * A custom [AndroidJUnitRunner] used to replace the application used in tests with a
- * [FruitsDairy].
+ * [TestMyFruitApplication].
  */
 
 class CustomTestRunner : AndroidJUnitRunner() {
-    override fun newApplication(cl: ClassLoader?, name: String?, context: Context?): Application {
-        return super.newApplication(cl, TestMyFruitApplication::class.java.name, context)
+    override fun newApplication(classLoader: ClassLoader?, className: String?, context: Context?): Application {
+        return super.newApplication(classLoader, TestMyFruitApplication::class.java.name, context)
     }
 }

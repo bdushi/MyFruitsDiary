@@ -1,6 +1,7 @@
 package al.bruno.fruit.diary
 
 import al.bruno.fruit.diary.di.TestComponent
+import al.bruno.fruit.diary.di.DaggerTestComponent
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import org.junit.rules.TestWatcher

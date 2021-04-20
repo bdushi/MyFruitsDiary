@@ -79,12 +79,6 @@ class FakeModule {
 
     @Provides
     @Singleton
-    fun providesDatabaseName(): String {
-        return "my-dairy.db"
-    }
-
-    @Provides
-    @Singleton
     fun providesDatabaseHelper(app: Application): AppDatabase {
         return Room
                 .inMemoryDatabaseBuilder(app, AppDatabase::class.java)

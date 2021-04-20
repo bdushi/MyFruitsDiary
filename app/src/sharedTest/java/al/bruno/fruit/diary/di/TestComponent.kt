@@ -24,6 +24,13 @@ import javax.inject.Singleton
  * https://proandroiddev.com/sharing-code-between-local-and-instrumentation-tests-c0b57ebd3200
  */
 
+/**
+ *
+ * https://developer.android.com/codelabs/advanced-android-kotlin-training-testing-basics#12
+ *
+ * https://developer.android.com/codelabs/advanced-android-kotlin-training-testing-test-doubles/#11
+ */
+
 @Singleton
 @Component(modules = [
     AndroidSupportInjectionModule::class,

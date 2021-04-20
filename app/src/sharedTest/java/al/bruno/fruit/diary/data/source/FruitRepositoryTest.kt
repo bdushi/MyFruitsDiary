@@ -7,24 +7,22 @@ package al.bruno.fruit.diary.data.source
 import al.bruno.fruit.diary.DaggerTestApplicationRule
 import al.bruno.fruit.diary.MainCoroutineRule
 import al.bruno.fruit.diary.data.source.local.AppDatabase
-import junit.framework.Assert.assertTrue
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
 import javax.inject.Inject
 
-@RunWith(JUnit4::class)
+@RunWith(AndroidJUnit4::class)
 @ExperimentalCoroutinesApi
 class FruitRepositoryTest {
-
     @set:Inject lateinit var entriesRepository: EntriesRepository
     @set:Inject lateinit var appDatabase: AppDatabase
-
     // Set the main coroutines dispatcher for unit testing.
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
@@ -50,7 +48,7 @@ class FruitRepositoryTest {
 
     @After
     fun closedb() {
-//        appDatabase.close()
+        appDatabase.close()
     }
 
     @Test

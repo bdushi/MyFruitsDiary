@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.DiffUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
-import java.util.*
 import javax.inject.Inject
 
 class DetailViewModel @Inject constructor(

@@ -15,6 +15,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "al.bruno.fruit.diary.CustomTestRunner"
+//        testInstrumentationRunner "al.bruno.fruit.diary.CustomTestRunner"
         testInstrumentationRunnerArguments clearPackageData: 'true'
         javaCompileOptions {
             annotationProcessorOptions {
@@ -24,17 +25,17 @@ android {
             }
         }
     }
-    android {
-        sourceSets {
-            String sharedTestDir = 'src/sharedTest/java'
-            test {
-                java.srcDir sharedTestDir
-            }
-            androidTest {
-                java.srcDir sharedTestDir
-            }
+
+    sourceSets {
+        String sharedTestDir = 'src/sharedTest/java'
+        test {
+            java.srcDir sharedTestDir
+        }
+        androidTest {
+            java.srcDir sharedTestDir
         }
     }
+
     buildTypes {
         debug {
             minifyEnabled false
@@ -44,8 +45,10 @@ android {
             testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguardTest-rules.pro'
         }
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            useProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguardTest-rules.pro'
         }
     }
 
@@ -68,7 +71,7 @@ android {
 //            }
 //        }
 //    }
-
+//
     packagingOptions {
         exclude "**/attach_hotspot_windows.dll"
         exclude "META-INF/licenses/**"
@@ -83,15 +86,11 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.3.0-rc01'
     implementation 'androidx.fragment:fragment-ktx:1.3.2'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swiperefreshlayout_version"
-//    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.core:core-ktx:1.6.0-alpha02'
     implementation 'com.google.android.material:material:1.4.0-alpha02'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
-//    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-//    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
-    //  implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
 
     // dagger
     implementation "com.google.dagger:dagger:$dagger_version"
@@ -114,15 +113,39 @@ dependencies {
     //
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
-    //
+
+    // Dependencies for local unit tests
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-
-//    testImplementation "androidx.arch.core:core-testing:$archTestingVersion"
-//    androidTestImplementation "androidx.room:room-testing:$room_version"
-
+    testImplementation "androidx.arch.core:core-testing:$archTestingVersion"
+    // Coroutines
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
+    // Espresso dependencies
+    testImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    testImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
+    testImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
+    testImplementation 'com.google.truth:truth:1.0'
+    // AndroidX Test - JVM testing
+    testImplementation "androidx.test.ext:junit-ktx:$androidXTestExtKotlinRunnerVersion"
+    // Core library
+    testImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
+    implementation "androidx.test:core:$androidXTestCoreVersion"
+    testImplementation "androidx.test:rules:$androidXTestRulesVersion"
+    // AndroidJUnitRunner and JUnit Rules
+    androidTestImplementation 'androidx.test:runner:1.3.0'
+    androidTestImplementation 'junit:junit:4.13.2'
     androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
+    // AndroidX Test - JVM testing
+
+    // AndroidX Test - Instrumented testing
+    androidTestImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
+    androidTestImplementation "androidx.test.ext:junit-ktx:$androidXTestExtKotlinRunnerVersion"
+    androidTestImplementation "androidx.test:rules:$androidXTestRulesVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
+
+//
+//    androidTestImplementation "androidx.room:room-testing:$room_version"
+
 }
