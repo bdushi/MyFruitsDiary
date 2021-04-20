@@ -13,6 +13,10 @@ import org.junit.runner.Description
  * Note that the `testInstrumentationRunner` property needs to point to [CustomTestRunner].
  */
 
+/**
+ * https://medium.com/@fabioCollini/android-testing-using-dagger-2-mockito-and-a-custom-junit-rule-c8487ed01b56
+ */
+
 class DaggerTestApplicationRule : TestWatcher() {
 
     lateinit var component: TestComponent
