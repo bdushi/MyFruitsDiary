@@ -17,8 +17,11 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.NavHostFragment.findNavController
+// import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 /**
@@ -26,14 +29,16 @@ import javax.inject.Inject
  * Use the [AddFruitFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class AddFruitFragment :  MainFragment() {
+class AddFruitFragment : MainFragment() {
     @Inject
     lateinit var viewModelProvider: ViewModelProvider.Factory
 
     // findNavController().getBackStackEntry(R.id.mobile_navigation).viewModelStore
     // findNavController().getBackStackEntry(R.id.mobile_navigation)
     private val addFruitViewModel by lazy {
-        ViewModelProvider(findNavController().getBackStackEntry(R.id.mobile_navigation).viewModelStore, viewModelProvider)[AddFruitViewModel::class.java]
+        ViewModelProvider(
+            findNavController(this).getBackStackEntry(R.id.mobile_navigation).viewModelStore,
+            viewModelProvider)[AddFruitViewModel::class.java]
     }
     // private val addFruitViewModel:AddFruitViewModel by navGraphViewModels(R.id.mobile_navigation)
     private var entries: Entries? = null
@@ -46,7 +51,7 @@ class AddFruitFragment :  MainFragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val fragmentAddFruitBinding = FragmentAddFruitBinding.inflate(inflater)
         fragmentAddFruitBinding.lifecycleOwner = this
         fragmentAddFruitBinding.viewModel = addFruitViewModel
@@ -57,7 +62,7 @@ class AddFruitFragment :  MainFragment() {
         super.onViewCreated(view, savedInstanceState)
         addFruitViewModel.onItemSelectedListener = object : OnItemClickListener<Fruit> {
             override fun onItemClick(t: Fruit) {
-                findNavController().navigate(R.id.action_addFruitFragment_to_addFruitDialog,
+                findNavController(this@AddFruitFragment).navigate(R.id.action_addFruitFragment_to_addFruitDialog,
                     bundleOf(FRUIT to t, ENTRIES to entries))
             }
 
@@ -65,10 +70,15 @@ class AddFruitFragment :  MainFragment() {
                 return false
             }
         }
-
-        addFruitViewModel.error.observe(viewLifecycleOwner, Observer {
-            Snackbar.make(view, it, Snackbar.LENGTH_SHORT).show()
-        })
+        // https://developer.android.com/kotlin/flow/stateflow-and-sharedflow
+        lifecycleScope.launchWhenStarted {
+            addFruitViewModel.addFruitUiState.collect {
+                when(it) {
+                    is AddFruitUiState.Success -> findNavController(this@AddFruitFragment).navigate(R.id.action_addFruitFragment_to_navigationMyDairy)
+                    is AddFruitUiState.Error -> Snackbar.make(view, it.exception.toString(), Snackbar.LENGTH_SHORT).show()
+                }
+            }
+        }
 
     }
 

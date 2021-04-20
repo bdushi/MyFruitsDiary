@@ -9,28 +9,23 @@ import al.bruno.fruit.diary.databinding.AddFruitSingleItemBinding
 import al.bruno.fruit.diary.listener.OnItemClickListener
 import al.bruno.fruit.diary.model.Fruit
 import al.bruno.fruit.diary.util.ErrorHandler
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DiffUtil
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class AddFruitViewModel @Inject constructor(
     private val fruitRepository: FruitRepository,
     private val entriesRepository: EntriesRepository,
     private val errorHandler: ErrorHandler) : ViewModel() {
 
-    private val _error = MutableLiveData<String>()
-    val error: LiveData<String> = _error
-
-    private val _success = MutableLiveData<String>()
-    val success: LiveData<String> = _success
+    private val _addFruitUiState = MutableStateFlow<AddFruitUiState>(AddFruitUiState.Success(""))
+    val addFruitUiState: StateFlow<AddFruitUiState> = _addFruitUiState
 
     lateinit var onItemSelectedListener: OnItemClickListener<Fruit>
     val adapter = CustomListAdapter(
@@ -59,15 +54,16 @@ class AddFruitViewModel @Inject constructor(
 
     fun entries(entryId: Long?, fruitId: Long?, nrOfFruit: Int?) {
         viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val response = entriesRepository.entries(entryId, fruitId, nrOfFruit)
-                if(response.isSuccessful) {
-                    _success.postValue(response.message())
+            runCatching {
+                entriesRepository.entries(entryId, fruitId, nrOfFruit)
+            }.onSuccess {
+                if(it.isSuccessful) {
+                    _addFruitUiState.value = AddFruitUiState.Success(it.message())
                 } else {
-                    _error.postValue(errorHandler.parseError(response).message)
+                    _addFruitUiState.value = AddFruitUiState.Error(errorHandler.parseError(it).message)
                 }
-            } catch (ex: HttpException) {
-                _error.postValue(ex.message)
+            }.onFailure {
+                _addFruitUiState.value = AddFruitUiState.Error(it.message)
             }
         }
     }

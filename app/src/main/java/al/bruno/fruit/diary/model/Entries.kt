@@ -13,8 +13,7 @@ data class Entries(val id: Long, val date: Date, val fruit: List<Fruit>?) : Sect
         parcel.readLong(),
         Date(parcel.readLong()),
         parcel.createTypedArrayList(Fruit)
-    ) {
-    }
+    )
 
     override fun items(): List<Fruit> {
         return fruit ?: ArrayList()

@@ -18,27 +18,27 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-class AppModule {
+class FakeModule {
     @Provides
     @Singleton
     fun providerRetrofit(
-        okHttpClient: OkHttpClient,
-        gsonConverterFactory: GsonConverterFactory
+            okHttpClient: OkHttpClient,
+            gsonConverterFactory: GsonConverterFactory
     ): Retrofit {
         return Retrofit
-            .Builder()
-            .baseUrl("https://fruitdiary.test.themobilelife.com/api/")
-            .client(okHttpClient)
-            .addConverterFactory(gsonConverterFactory)
-            .build()
+                .Builder()
+                .baseUrl("https://fruitdiary.test.themobilelife.com/api/")
+                .client(okHttpClient)
+                .addConverterFactory(gsonConverterFactory)
+                .build()
     }
 
     @Provides
     @Reusable
     fun okHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(httpLoggingInterceptor)
-            .build()
+                .addInterceptor(httpLoggingInterceptor)
+                .build()
     }
 
     @Provides
@@ -53,9 +53,9 @@ class AppModule {
     @Reusable
     fun converterFactory(): GsonConverterFactory {
         return GsonConverterFactory.create(
-            GsonBuilder()
-                .setDateFormat("yyyy-MM-dd")
-                .create()
+                GsonBuilder()
+                        .setDateFormat("yyyy-MM-dd")
+                        .create()
         )
     }
 
@@ -85,9 +85,9 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun providesDatabaseHelper(app: Application, name: String): AppDatabase {
+    fun providesDatabaseHelper(app: Application): AppDatabase {
         return Room
-            .databaseBuilder(app, AppDatabase::class.java, name)
+                .inMemoryDatabaseBuilder(app, AppDatabase::class.java)
             .build()
     }
 

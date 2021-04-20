@@ -9,13 +9,15 @@ import al.bruno.fruit.diary.util.ENTRIES
 import al.bruno.fruit.diary.util.FRUIT
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-//import androidx.navigation.fragment.NavHostFragment.findNavController
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.NavHostFragment.findNavController
+//import androidx.navigation.fragment.findNavController
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -31,13 +33,14 @@ class AddFruitDialog : DialogFragment() {
      */
     // findNavController().getBackStackEntry(R.id.mobile_navigation)
     private val addFruitViewModel by lazy {
-        ViewModelProvider(findNavController().getBackStackEntry(R.id.mobile_navigation).viewModelStore, viewModelProvider)[AddFruitViewModel::class.java]
+        ViewModelProvider(findNavController(this).getBackStackEntry(R.id.mobile_navigation).viewModelStore, viewModelProvider)[AddFruitViewModel::class.java]
     }
 
     //private val addFruitViewModel:AddFruitViewModel by navGraphViewModels(R.id.mobile_navigation)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(AddFruitDialog::class.java.name, "onCreate")
         setStyle(STYLE_NO_TITLE, R.style.MyTheme_FloatingDialog);
         arguments?.let {
             fruit = it.getParcelable(FRUIT)
@@ -72,12 +75,18 @@ class AddFruitDialog : DialogFragment() {
         return dialogAddFruit.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         AndroidSupportInjection.inject(this)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d(AddFruitDialog::class.java.name, "onDestroyView")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(AddFruitDialog::class.java.name, "onDestroy")
     }
 }
