@@ -19,6 +19,4 @@ interface AppComponent : AndroidInjector<FruitsDairy> {
     interface Factory {
         fun application(@BindsInstance application: Application): AppComponent
     }
-
-    override fun inject(instance: FruitsDairy)
 }

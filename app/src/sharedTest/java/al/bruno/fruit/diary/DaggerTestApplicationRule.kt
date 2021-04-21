@@ -25,7 +25,7 @@ class DaggerTestApplicationRule : TestWatcher() {
     override fun starting(description: Description?) {
         super.starting(description)
 
-        val app = ApplicationProvider.getApplicationContext<Context>() as TestMyFruitApplication
+        val app = ApplicationProvider.getApplicationContext<Context>() as FruitsDairy
         component = DaggerTestComponent.factory().create(app)
         component.inject(app)
     }

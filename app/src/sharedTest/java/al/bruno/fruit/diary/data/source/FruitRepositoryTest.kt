@@ -7,10 +7,14 @@ package al.bruno.fruit.diary.data.source
 import al.bruno.fruit.diary.DaggerTestApplicationRule
 import al.bruno.fruit.diary.MainCoroutineRule
 import al.bruno.fruit.diary.data.source.local.AppDatabase
+import al.bruno.fruit.diary.model.Fruit
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
-import org.junit.After
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.runBlocking
+
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -21,8 +25,7 @@ import javax.inject.Inject
 @RunWith(AndroidJUnit4::class)
 @ExperimentalCoroutinesApi
 class FruitRepositoryTest {
-    @set:Inject lateinit var entriesRepository: EntriesRepository
-    @set:Inject lateinit var appDatabase: AppDatabase
+    @set:Inject lateinit var fruitRepository: FruitRepository
     // Set the main coroutines dispatcher for unit testing.
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
@@ -30,51 +33,49 @@ class FruitRepositoryTest {
     /**
      * Sets up Dagger components for testing.
      */
-//    @get:Rule
-//    val rule = DaggerTestApplicationRule()
+    @get:Rule
+    val rule = DaggerTestApplicationRule()
 
     /**
      * Gets a reference to the [EntriesRepository] exposed by the [DaggerTestApplicationRule].
      */
     @Before
     fun setupDaggerComponent() {
-        DaggerTestApplicationRule()
-//        entriesRepository = rule.component.entriesRepository
+        fruitRepository = rule.component.fruitRepository
     }
 
     // Executes each task synchronously using Architecture Components.
-//    @get:Rule
-//    var instantExecutorRule = InstantTaskExecutorRule()
+    @get:Rule
+    var instantExecutorRule = InstantTaskExecutorRule()
 
-    @After
-    fun closedb() {
-        appDatabase.close()
+    @Test
+    fun fruitRemote() = runBlocking {
+        assertTrue(fruitRepository.fruitRemote().isSuccessful)
     }
 
     @Test
-    fun todo() = runBlockingTest {
-        val response = entriesRepository.entries()
-        assertTrue(response.isSuccessful)
-    }
-
-    //    @Test
-//    public void testInsert() {
-//        assertNotEquals(dictionaryRepository.put(new Dictionary("test", "test")), -1);
-//    }
-
-    @Test
-    fun fruitRemote() {
-    }
-
-    @Test
-    fun fruitLocal() {
-    }
-
-    @Test
-    fun insert() {
+    fun insert() = runBlocking {
+        val fruit = Fruit(
+            1,
+            "Apple",
+            250,
+            "https://fruitdiary.test.themobilelife.com/api/fruit/images/apple.png",
+            1
+        )
+        fruitRepository.insert(
+            listOf(
+                fruit
+            )
+        )
+        fruitRepository.fruits().collect {
+            assertTrue(it.indexOf(fruit) == 0)
+        }
     }
 
     @Test
-    fun fruits() {
+    fun fruits() = runBlocking {
+        fruitRepository.fruits().collect {
+            assertTrue(it.isNotEmpty())
+        }
     }
 }

@@ -1,5 +1,9 @@
 package al.bruno.fruit.diary.di
 
+import al.bruno.fruit.diary.FruitsDairy
+import al.bruno.fruit.diary.TestMyFruitApplication
+import al.bruno.fruit.diary.data.source.EntriesRepository
+import al.bruno.fruit.diary.data.source.FruitRepository
 import android.app.Application
 import dagger.BindsInstance
 import dagger.Component
@@ -42,4 +46,6 @@ interface TestComponent : AppComponent {
     interface Factory {
         fun create(@BindsInstance application: Application): TestComponent
     }
+    val entriesRepository: EntriesRepository
+    val fruitRepository: FruitRepository
 }
