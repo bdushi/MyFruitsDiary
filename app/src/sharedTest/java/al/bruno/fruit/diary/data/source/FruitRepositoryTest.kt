@@ -58,8 +58,8 @@ class FruitRepositoryTest {
         val fruit = Fruit(
             1,
             "Apple",
-            250,
-            "https://fruitdiary.test.themobilelife.com/api/fruit/images/apple.png",
+            25,
+            "https://fruitdiary.test.themobilelife.com/images/apple.png",
             1
         )
         fruitRepository.insert(

@@ -39,8 +39,7 @@ data class Fruit(
         parcel.readLong(),
         parcel.readString(),
         parcel.readInt()
-    ) {
-    }
+    )
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(id)
         parcel.writeString(type)
