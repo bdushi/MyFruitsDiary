@@ -62,11 +62,12 @@ class FruitRepositoryTest {
             "https://fruitdiary.test.themobilelife.com/images/apple.png",
             1
         )
-        fruitRepository.insert(
-            listOf(
-                fruit
+        val fruits = fruitRepository.fruitRemote().body()
+        fruits?.let {
+            fruitRepository.insert(
+                it
             )
-        )
+        }
         fruitRepository.fruits().collect {
             assertTrue(it.indexOf(fruit) == 0)
         }

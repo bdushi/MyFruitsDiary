@@ -147,6 +147,16 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
     androidTestImplementation "org.mockito:mockito-core:$mockitoVersion"
 
+    //
+    testImplementation 'com.github.fabioCollini.daggermock:daggermock:0.8.5'
+    //and/or
+    androidTestImplementation 'com.github.fabioCollini.daggermock:daggermock:0.8.5'
+
+    //kotlin helper methods
+    testImplementation 'com.github.fabioCollini.daggermock:daggermock-kotlin:0.8.5'
+    //and/or
+    androidTestImplementation 'com.github.fabioCollini.daggermock:daggermock-kotlin:0.8.5'
+
 //
 //    androidTestImplementation "androidx.room:room-testing:$room_version"
 

@@ -21,10 +21,10 @@ import javax.inject.Inject
 class EntriesRemoteDataSourceTest {
 
     @set:Inject
-    lateinit var entriesDataSource: EntriesDataSource
+    lateinit var entriesDataSource: EntriesRemoteDataSource
 
     @get:Rule
-    var mainCoroutineRule = MainCoroutineRule()
+    val mainCoroutineRule = MainCoroutineRule()
 
     @Before
     fun setupDaggerComponent() {
