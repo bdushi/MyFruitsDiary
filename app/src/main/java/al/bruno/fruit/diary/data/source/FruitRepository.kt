@@ -17,9 +17,6 @@ class FruitRepository @Inject constructor(
     suspend fun fruitRemote(): Response<List<Fruit>> {
         return fruitRemoteDataSource.fruit()
     }
-    suspend fun fruitLocal() {
-        fruitLocalDataSource.fruit()
-    }
 
     suspend fun insert(fruits: List<Fruit>) {
         return fruitLocalDataSource.insert(fruits)

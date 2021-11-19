@@ -7,13 +7,16 @@ import retrofit2.Converter
 import retrofit2.Response
 import al.bruno.fruit.diary.model.Error
 
-
 class ErrorHandler @Inject constructor(private val retrofit: Retrofit) {
     fun parseError(response: Response<*>): Error {
-        val converter: Converter<ResponseBody, Error> = retrofit.responseBodyConverter<Error>(Error::class.java, arrayOfNulls(0))
         return try {
             if (response.errorBody() != null) {
-                converter.convert(response.errorBody()) ?: Error(400, "Error Body is Null")
+                retrofit
+                    .responseBodyConverter<Error>(
+                        Error::class.java,
+                        arrayOfNulls(0)
+                    )
+                    .convert(response.errorBody()) ?: Error(400, "Error Body is Null")
             } else {
                 Error(400, "Error Body is Null")
             }

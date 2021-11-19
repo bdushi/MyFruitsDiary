@@ -3,7 +3,6 @@ package al.bruno.fruit.diary.data.source.remote
 import al.bruno.fruit.diary.data.source.EntriesDataSource
 import al.bruno.fruit.diary.data.source.remote.service.EntriesService
 import al.bruno.fruit.diary.model.Entries
-import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Response
 import java.util.*

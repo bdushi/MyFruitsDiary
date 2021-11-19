@@ -38,17 +38,16 @@
         <action
             android:id="@+id/action_addFruitFragment_to_addFruitDialog"
             app:destination="@id/addFruitDialog" />
-    </fragment>
-
-    <dialog
-        android:id="@+id/addFruitDialog"
-        android:name="al.bruno.fruit.diary.ui.add.AddFruitDialog"
-        tools:layout="@layout/dialog_add_fruit">
         <action
             android:id="@+id/action_addFruitFragment_to_navigationMyDairy"
             app:popUpTo="@+id/nav_host_fragment"
             app:destination="@id/navigationMyDairy"
             app:launchSingleTop="true"
             app:popUpToInclusive="true" />
-    </dialog>
+    </fragment>
+
+    <dialog
+        android:id="@+id/addFruitDialog"
+        android:name="al.bruno.fruit.diary.ui.add.AddFruitDialog"
+        tools:layout="@layout/dialog_add_fruit"/>
 </navigation>

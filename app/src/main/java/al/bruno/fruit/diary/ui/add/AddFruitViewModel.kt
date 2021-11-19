@@ -7,38 +7,50 @@ import al.bruno.fruit.diary.data.source.EntriesRepository
 import al.bruno.fruit.diary.data.source.FruitRepository
 import al.bruno.fruit.diary.databinding.AddFruitSingleItemBinding
 import al.bruno.fruit.diary.listener.OnItemClickListener
-import al.bruno.fruit.diary.model.Basket
 import al.bruno.fruit.diary.model.Fruit
 import al.bruno.fruit.diary.util.ErrorHandler
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DiffUtil
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.util.concurrent.TimeoutException
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class AddFruitViewModel @Inject constructor(
     private val fruitRepository: FruitRepository,
     private val entriesRepository: EntriesRepository,
-    private val errorHandler: ErrorHandler,
-    private val basket: Basket) : ViewModel() {
+    private val errorHandler: ErrorHandler
+) : ViewModel() {
+    /**
+     * https://developer.android.com/kotlin/flow/stateflow-and-sharedflow
+     * https://github.com/Kotlin/kotlinx.coroutines/issues/2515
+     */
+    private val _addFruitUiState = MutableSharedFlow<AddFruitUiState>(
+        replay = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+    // resetReplayCache()
+    val addFruitUiState: SharedFlow<AddFruitUiState> = _addFruitUiState
 
-    private val _error = MutableLiveData<String>()
-    val error: LiveData<String> = _error
+    lateinit var onItemSelectedListener: (fruit: Fruit) -> Unit
 
-    lateinit var onItemSelectedListener: OnItemClickListener<Fruit>
     val adapter = CustomListAdapter(
         R.layout.add_fruit_single_item,
         object : BindingData<Fruit, AddFruitSingleItemBinding> {
             override fun bindData(t: Fruit?, vm: AddFruitSingleItemBinding) {
                 vm.fruit = t
-                vm.onItemClick = onItemSelectedListener
+                vm.onItemClick = object : OnItemClickListener<Fruit> {
+                    override fun onItemClick(t: Fruit) {
+                        onItemSelectedListener.invoke(t)
+                    }
+
+                    override fun onLongItemClick(t: Fruit): Boolean {
+                        TODO("Not yet implemented")
+                    }
+
+                }
             }
         },
         object : DiffUtil.ItemCallback<Fruit>() {
@@ -57,23 +69,21 @@ class AddFruitViewModel @Inject constructor(
         }
     }
 
-    fun load() : LiveData<List<Fruit>> {
-        return fruitRepository.fruit()
-    }
-
-    fun entries(entryId: Long?, f: Fruit?) {
+    fun entries(entryId: Long?, fruitId: Long?, nrOfFruit: Int?) {
         viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val response = entriesRepository.entries(entryId, fruitId = f?.id, nrOfFruit = f?.amount)
-                if(response.isSuccessful) {
-                    basket.fruit = f
+            runCatching {
+                entriesRepository.entries(entryId, fruitId, nrOfFruit)
+            }.onSuccess {
+                if (it.isSuccessful) {
+                    _addFruitUiState.emit(AddFruitUiState.Success(it.message()))
+                    _addFruitUiState.resetReplayCache()
                 } else {
-                    _error.postValue(errorHandler.parseError(response).message)
+                    _addFruitUiState.emit(AddFruitUiState.Error(errorHandler.parseError(it).message))
+                    _addFruitUiState.resetReplayCache()
                 }
-            } catch (ex: HttpException) {
-                _error.postValue(ex.message)
-            } catch (ex: TimeoutException) {
-                _error.postValue(ex.message)
+            }.onFailure {
+                _addFruitUiState.emit(AddFruitUiState.Error(it.message))
+                _addFruitUiState.resetReplayCache()
             }
         }
     }

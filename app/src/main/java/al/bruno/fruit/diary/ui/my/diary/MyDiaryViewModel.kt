@@ -2,15 +2,11 @@ package al.bruno.fruit.diary.ui.my.diary
 
 import al.bruno.fruit.diary.R
 import al.bruno.fruit.diary.adapter.BindingData
-import al.bruno.fruit.diary.adapter.BindingChildData
 import al.bruno.fruit.diary.adapter.CustomListAdapter
-import al.bruno.fruit.diary.adapter.SectionAdapter
 import al.bruno.fruit.diary.data.source.EntriesRepository
 import al.bruno.fruit.diary.databinding.EntriesSingleItemBinding
-import al.bruno.fruit.diary.databinding.FruitSingleItemBinding
 import al.bruno.fruit.diary.listener.OnItemClickListener
 import al.bruno.fruit.diary.model.Entries
-import al.bruno.fruit.diary.model.Fruit
 import al.bruno.fruit.diary.util.ErrorHandler
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

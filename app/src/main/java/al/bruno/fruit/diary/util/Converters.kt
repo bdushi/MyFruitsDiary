@@ -5,7 +5,7 @@ import java.util.*
 
 class Converters {
     @TypeConverter
-    fun fromTime(value: Long): Date? {
+    fun fromTime(value: Long): Date {
         return Date(value)
     }
 

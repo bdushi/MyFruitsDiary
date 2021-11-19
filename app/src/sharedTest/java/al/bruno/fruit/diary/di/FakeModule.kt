@@ -4,8 +4,6 @@ import al.bruno.fruit.diary.data.source.local.AppDatabase
 import al.bruno.fruit.diary.data.source.local.dao.FruitDao
 import al.bruno.fruit.diary.data.source.remote.service.EntriesService
 import al.bruno.fruit.diary.data.source.remote.service.FruitService
-import al.bruno.fruit.diary.model.Basket
-import al.bruno.fruit.diary.model.Fruit
 import al.bruno.fruit.diary.util.ErrorHandler
 import android.app.Application
 import androidx.room.Room
@@ -20,27 +18,27 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-class AppModule {
+class FakeModule {
     @Provides
     @Singleton
     fun providerRetrofit(
-        okHttpClient: OkHttpClient,
-        gsonConverterFactory: GsonConverterFactory
+            okHttpClient: OkHttpClient,
+            gsonConverterFactory: GsonConverterFactory
     ): Retrofit {
         return Retrofit
-            .Builder()
-            .baseUrl("https://fruitdiary.test.themobilelife.com/api/")
-            .client(okHttpClient)
-            .addConverterFactory(gsonConverterFactory)
-            .build()
+                .Builder()
+                .baseUrl("https://fruitdiary.test.themobilelife.com/api/")
+                .client(okHttpClient)
+                .addConverterFactory(gsonConverterFactory)
+                .build()
     }
 
     @Provides
     @Reusable
     fun okHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(httpLoggingInterceptor)
-            .build()
+                .addInterceptor(httpLoggingInterceptor)
+                .build()
     }
 
     @Provides
@@ -55,17 +53,12 @@ class AppModule {
     @Reusable
     fun converterFactory(): GsonConverterFactory {
         return GsonConverterFactory.create(
-            GsonBuilder()
-                .setDateFormat("yyyy-MM-dd")
-                .create()
+                GsonBuilder()
+                        .setDateFormat("yyyy-MM-dd")
+                        .create()
         )
     }
 
-    @Provides
-    @Singleton
-    fun basket(): Basket {
-        return Basket()
-    }
     @Provides
     @Singleton
     fun errorHandler(retrofit: Retrofit): ErrorHandler {
@@ -86,15 +79,9 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun providesDatabaseName(): String {
-        return "my-dairy.db"
-    }
-
-    @Provides
-    @Singleton
-    fun providesDatabaseHelper(app: Application, name: String): AppDatabase {
+    fun providesDatabaseHelper(app: Application): AppDatabase {
         return Room
-            .databaseBuilder(app, AppDatabase::class.java, name)
+                .inMemoryDatabaseBuilder(app, AppDatabase::class.java)
             .build()
     }
 
