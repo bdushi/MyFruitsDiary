@@ -2,6 +2,7 @@ package al.bruno.fruit.diary.ui.add
 
 import al.bruno.fruit.diary.R
 import al.bruno.fruit.diary.databinding.DialogAddFruitBinding
+import al.bruno.fruit.diary.databinding.FragmentAddFruitBinding
 import al.bruno.fruit.diary.listener.ViewOnClickListener
 import al.bruno.fruit.diary.model.Entries
 import al.bruno.fruit.diary.model.Fruit
@@ -14,10 +15,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.NavHostFragment.findNavController
-//import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.findNavController
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -25,22 +24,28 @@ class AddFruitDialog : DialogFragment() {
 
     private var fruit: Fruit? = null
     private var entries: Entries? = null
+
     @Inject
     lateinit var viewModelProvider: ViewModelProvider.Factory
 
+    private var _binding: DialogAddFruitBinding? = null
+    // This property is only valid between onCreateView and onDestroyView.
+    private val binding get() = _binding
     /**
      * https://developer.android.com/guide/navigation/navigation-programmatic#kotlin
      */
     // findNavController().getBackStackEntry(R.id.mobile_navigation)
     private val addFruitViewModel by lazy {
-        ViewModelProvider(findNavController(this).getBackStackEntry(R.id.mobile_navigation).viewModelStore, viewModelProvider)[AddFruitViewModel::class.java]
+        ViewModelProvider(
+            findNavController().getBackStackEntry(R.id.mobile_navigation).viewModelStore,
+            viewModelProvider
+        )[AddFruitViewModel::class.java]
     }
 
     //private val addFruitViewModel:AddFruitViewModel by navGraphViewModels(R.id.mobile_navigation)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(AddFruitDialog::class.java.name, "onCreate")
         setStyle(STYLE_NO_TITLE, R.style.MyTheme_FloatingDialog);
         arguments?.let {
             fruit = it.getParcelable(FRUIT)
@@ -53,9 +58,9 @@ class AddFruitDialog : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val dialogAddFruit = DialogAddFruitBinding.inflate(inflater)
-        dialogAddFruit.fruit = fruit
-        dialogAddFruit.onClick = object : ViewOnClickListener<Fruit> {
+        _binding = DialogAddFruitBinding.inflate(inflater)
+        binding?.fruit = fruit
+        binding?.onClick = object : ViewOnClickListener<Fruit> {
             override fun onClick(v: View, t: Fruit) {
                 when (v.id) {
                     R.id.add_fruit_ok -> {
@@ -72,7 +77,7 @@ class AddFruitDialog : DialogFragment() {
                 }
             }
         }
-        return dialogAddFruit.root
+        return binding?.root
     }
 
     override fun onAttach(context: Context) {
@@ -82,6 +87,7 @@ class AddFruitDialog : DialogFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        _binding = null
         Log.d(AddFruitDialog::class.java.name, "onDestroyView")
     }
 

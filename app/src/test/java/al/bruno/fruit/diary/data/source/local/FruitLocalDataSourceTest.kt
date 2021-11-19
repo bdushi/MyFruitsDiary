@@ -13,7 +13,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
-
 @ExperimentalCoroutinesApi
 @RunWith(JUnit4::class)
 class FruitLocalDataSourceTest {
@@ -22,6 +21,7 @@ class FruitLocalDataSourceTest {
 
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
+
     @get:Rule
     var rule: DaggerMockRule<TestComponent> =
         DaggerMockRule(TestComponent::class.java, FakeModule())

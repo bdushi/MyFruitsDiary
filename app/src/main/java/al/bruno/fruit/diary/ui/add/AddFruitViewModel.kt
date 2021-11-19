@@ -13,27 +13,44 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DiffUtil
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class AddFruitViewModel @Inject constructor(
     private val fruitRepository: FruitRepository,
     private val entriesRepository: EntriesRepository,
-    private val errorHandler: ErrorHandler) : ViewModel() {
+    private val errorHandler: ErrorHandler
+) : ViewModel() {
+    /**
+     * https://developer.android.com/kotlin/flow/stateflow-and-sharedflow
+     * https://github.com/Kotlin/kotlinx.coroutines/issues/2515
+     */
+    private val _addFruitUiState = MutableSharedFlow<AddFruitUiState>(
+        replay = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+    // resetReplayCache()
+    val addFruitUiState: SharedFlow<AddFruitUiState> = _addFruitUiState
 
-    private val _addFruitUiState = MutableStateFlow<AddFruitUiState>(AddFruitUiState.Success(""))
-    val addFruitUiState: StateFlow<AddFruitUiState> = _addFruitUiState
+    lateinit var onItemSelectedListener: (fruit: Fruit) -> Unit
 
-    lateinit var onItemSelectedListener: OnItemClickListener<Fruit>
     val adapter = CustomListAdapter(
         R.layout.add_fruit_single_item,
         object : BindingData<Fruit, AddFruitSingleItemBinding> {
             override fun bindData(t: Fruit?, vm: AddFruitSingleItemBinding) {
                 vm.fruit = t
-                vm.onItemClick = onItemSelectedListener
+                vm.onItemClick = object : OnItemClickListener<Fruit> {
+                    override fun onItemClick(t: Fruit) {
+                        onItemSelectedListener.invoke(t)
+                    }
+
+                    override fun onLongItemClick(t: Fruit): Boolean {
+                        TODO("Not yet implemented")
+                    }
+
+                }
             }
         },
         object : DiffUtil.ItemCallback<Fruit>() {
@@ -57,13 +74,16 @@ class AddFruitViewModel @Inject constructor(
             runCatching {
                 entriesRepository.entries(entryId, fruitId, nrOfFruit)
             }.onSuccess {
-                if(it.isSuccessful) {
-                    _addFruitUiState.value = AddFruitUiState.Success(it.message())
+                if (it.isSuccessful) {
+                    _addFruitUiState.emit(AddFruitUiState.Success(it.message()))
+                    _addFruitUiState.resetReplayCache()
                 } else {
-                    _addFruitUiState.value = AddFruitUiState.Error(errorHandler.parseError(it).message)
+                    _addFruitUiState.emit(AddFruitUiState.Error(errorHandler.parseError(it).message))
+                    _addFruitUiState.resetReplayCache()
                 }
             }.onFailure {
-                _addFruitUiState.value = AddFruitUiState.Error(it.message)
+                _addFruitUiState.emit(AddFruitUiState.Error(it.message))
+                _addFruitUiState.resetReplayCache()
             }
         }
     }
