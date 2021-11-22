@@ -16,18 +16,6 @@ class CustomListAdapter<T, VM: ViewDataBinding>(
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder<T, VM>, position: Int) {
-        getItem(position)?.let{ holder.bind(it) }
+        holder.bind(getItem(position))
     }
-
-
-    public override fun getItem(position: Int): T {
-        return super.getItem(position)
-    }
-    /*override fun getItemCount(): Int {
-        return t.size
-    }*/
-
-    /*object : DiffUtil.ItemCallback<T>() {
-        override fun areItemsTheSame(oldItem: T, newItem: T): Boolean = oldItem == newItem
-        override fun areContentsTheSame(oldItem: T, newItem: T): Boolean = oldItem == newItem }*/
 }

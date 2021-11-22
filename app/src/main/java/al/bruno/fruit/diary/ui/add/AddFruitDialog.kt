@@ -88,11 +88,5 @@ class AddFruitDialog : DialogFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        Log.d(AddFruitDialog::class.java.name, "onDestroyView")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d(AddFruitDialog::class.java.name, "onDestroy")
     }
 }

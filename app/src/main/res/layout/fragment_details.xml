@@ -48,7 +48,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/details_entries_date"
-                app:layout_constraintBottom_toTopOf="@+id/details_fruits"
+                app:layout_constraintBottom_toTopOf="@+id/rv_details_fruits"
                 app:srcCompat="@drawable/ic_clear_black_24dp"/>
 
             <com.google.android.material.textview.MaterialTextView
@@ -64,10 +64,9 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/details_fruits"
+                android:id="@+id/rv_details_fruits"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:adapter="@{viewModel.adapter}"
                 android:visibility="@{entries.fruit.empty ? View.GONE : View.VISIBLE}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintStart_toStartOf="parent"

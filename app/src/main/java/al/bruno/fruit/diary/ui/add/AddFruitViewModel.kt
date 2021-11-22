@@ -34,37 +34,13 @@ class AddFruitViewModel @Inject constructor(
     // resetReplayCache()
     val addFruitUiState: SharedFlow<AddFruitUiState> = _addFruitUiState
 
-    lateinit var onItemSelectedListener: (fruit: Fruit) -> Unit
-
-    val adapter = CustomListAdapter(
-        R.layout.add_fruit_single_item,
-        object : BindingData<Fruit, AddFruitSingleItemBinding> {
-            override fun bindData(t: Fruit?, vm: AddFruitSingleItemBinding) {
-                vm.fruit = t
-                vm.onItemClick = object : OnItemClickListener<Fruit> {
-                    override fun onItemClick(t: Fruit) {
-                        onItemSelectedListener.invoke(t)
-                    }
-
-                    override fun onLongItemClick(t: Fruit): Boolean {
-                        TODO("Not yet implemented")
-                    }
-
-                }
-            }
-        },
-        object : DiffUtil.ItemCallback<Fruit>() {
-            override fun areItemsTheSame(oldItem: Fruit, newItem: Fruit): Boolean =
-                oldItem.id == newItem.id
-
-            override fun areContentsTheSame(oldItem: Fruit, newItem: Fruit): Boolean =
-                oldItem == newItem
-        })
+    private val _fruits = MutableStateFlow<List<Fruit>>(arrayListOf())
+    val fruits: StateFlow<List<Fruit>> = _fruits
 
     fun fruits() {
         viewModelScope.launch {
             fruitRepository.fruits().collect {
-                adapter.submitList(it)
+                _fruits.value = it
             }
         }
     }
@@ -75,7 +51,8 @@ class AddFruitViewModel @Inject constructor(
                 entriesRepository.entries(entryId, fruitId, nrOfFruit)
             }.onSuccess {
                 if (it.isSuccessful) {
-                    _addFruitUiState.emit(AddFruitUiState.Success(it.message()))
+                    _addFruitUiState
+                        .emit(AddFruitUiState.Success(it.message()))
                     _addFruitUiState.resetReplayCache()
                 } else {
                     _addFruitUiState.emit(AddFruitUiState.Error(errorHandler.parseError(it).message))

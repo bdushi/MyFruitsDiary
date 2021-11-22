@@ -4,10 +4,14 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25729166666666664" />
+        <entry key="app/src/main/res/layout/add_fruit_single_item.xml" value="0.25729166666666664" />
         <entry key="app/src/main/res/layout/dialog_add_fruit.xml" value="0.25729166666666664" />
+        <entry key="app/src/main/res/layout/entries_single_item.xml" value="0.25729166666666664" />
+        <entry key="app/src/main/res/layout/fragment_about.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_add_fruit.xml" value="0.25729166666666664" />
         <entry key="app/src/main/res/layout/fragment_details.xml" value="0.25729166666666664" />
         <entry key="app/src/main/res/layout/fragment_my_dairy.xml" value="0.25729166666666664" />
+        <entry key="app/src/main/res/layout/fruit_single_item.xml" value="0.25729166666666664" />
       </map>
     </option>
   </component>
