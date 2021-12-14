@@ -18,13 +18,10 @@ import org.junit.runner.Description
  */
 
 class DaggerTestApplicationRule : TestWatcher() {
-
     lateinit var component: TestComponent
         private set
-
-    override fun starting(description: Description?) {
+    override fun starting(description: Description) {
         super.starting(description)
-
         val app = ApplicationProvider.getApplicationContext<Context>() as FruitsDairy
         component = DaggerTestComponent.factory().create(app)
         component.inject(app)

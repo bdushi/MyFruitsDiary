@@ -1,6 +1,5 @@
 package al.bruno.fruit.diary
 
-import al.bruno.fruit.diary.di.AppComponent
 import al.bruno.fruit.diary.di.DaggerAppComponent
 import android.app.Application
 import dagger.android.AndroidInjector

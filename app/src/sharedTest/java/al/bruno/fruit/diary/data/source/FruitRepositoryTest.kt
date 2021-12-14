@@ -6,7 +6,6 @@ package al.bruno.fruit.diary.data.source
 
 import al.bruno.fruit.diary.DaggerTestApplicationRule
 import al.bruno.fruit.diary.MainCoroutineRule
-import al.bruno.fruit.diary.data.source.local.AppDatabase
 import al.bruno.fruit.diary.model.Fruit
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 

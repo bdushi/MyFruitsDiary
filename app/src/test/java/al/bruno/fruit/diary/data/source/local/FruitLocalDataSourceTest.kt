@@ -1,7 +1,6 @@
 package al.bruno.fruit.diary.data.source.local
 
 import al.bruno.fruit.diary.MainCoroutineRule
-import al.bruno.fruit.diary.data.source.EntriesRepository
 import al.bruno.fruit.diary.data.source.FruitRepository
 import al.bruno.fruit.diary.di.FakeModule
 import al.bruno.fruit.diary.di.TestComponent

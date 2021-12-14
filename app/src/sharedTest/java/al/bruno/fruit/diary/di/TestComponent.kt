@@ -1,7 +1,5 @@
 package al.bruno.fruit.diary.di
 
-import al.bruno.fruit.diary.FruitsDairy
-import al.bruno.fruit.diary.TestMyFruitApplication
 import al.bruno.fruit.diary.data.source.EntriesRepository
 import al.bruno.fruit.diary.data.source.FruitRepository
 import android.app.Application
@@ -36,16 +34,19 @@ import javax.inject.Singleton
  */
 
 @Singleton
-@Component(modules = [
-    AndroidSupportInjectionModule::class,
-    FakeModule::class,
-    FakeDataSourceModule::class,
-])
+@Component(
+    modules = [
+        AndroidSupportInjectionModule::class,
+        FakeModule::class,
+        FakeDataSourceModule::class,
+    ]
+)
 interface TestComponent : AppComponent {
     @Component.Factory
     interface Factory {
         fun create(@BindsInstance application: Application): TestComponent
     }
+
     val entriesRepository: EntriesRepository
     val fruitRepository: FruitRepository
 }

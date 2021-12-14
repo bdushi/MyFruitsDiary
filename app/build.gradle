@@ -16,7 +16,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "al.bruno.fruit.diary.CustomTestRunner"
-        testInstrumentationRunnerArguments clearPackageData: 'true'
+//        testInstrumentationRunnerArguments clearPackageData: 'true'
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [
@@ -27,15 +27,22 @@ android {
     }
 
     sourceSets {
-        String sharedTestDir = 'src/sharedTest/java'
+        String sharedTestDir = "src/sharedTest/java"
         test {
-            java.srcDir sharedTestDir
+            java.srcDirs sharedTestDir
         }
         androidTest {
-            java.srcDir sharedTestDir
+            java.srcDirs sharedTestDir
         }
     }
-
+//    sourceSets {
+//        main {
+//            java {
+//                srcDirs 'src/main/java', 'src/main/java/sharedTest'
+//            }
+//        }
+//    }
+//
     buildTypes {
         debug {
             minifyEnabled false
@@ -69,15 +76,6 @@ android {
             excludes += ['**/attach_hotspot_windows.dll', 'META-INF/licenses/**', 'META-INF/AL2.0', 'META-INF/LGPL2.1']
         }
     }
-
-//    sourceSets {
-//        main {
-//            java {
-//                srcDirs 'src/main/java', 'src/main/java/sharedTest'
-//            }
-//        }
-//    }
-//
     namespace 'al.bruno.fruit.diary'
 }
 
@@ -87,9 +85,9 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.0'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swiperefreshlayout_version"
     implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'com.google.android.material:material:1.5.0-beta01'
+    implementation 'com.google.android.material:material:1.6.0-alpha01'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
-//    implementation 'androidx.fragment:fragment-ktx:2.4.0-beta02'
+    implementation 'androidx.fragment:fragment-ktx:1.4.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.0-beta02'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
@@ -106,7 +104,7 @@ dependencies {
     // retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3'
     implementation 'com.squareup.picasso:picasso:2.71828'
     // room
     implementation "androidx.room:room-runtime:$room_version"
