@@ -1,4 +1,4 @@
-package al.bruno.fruit.diary.di
+package al.bruno.fruit.diary.factory
 
 import androidx.lifecycle.ViewModel
 import dagger.MapKey

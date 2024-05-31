@@ -88,6 +88,7 @@ class AppModule {
     fun providesDatabaseHelper(app: Application, name: String): AppDatabase {
         return Room
             .databaseBuilder(app, AppDatabase::class.java, name)
+            .allowMainThreadQueries()
             .build()
     }
 

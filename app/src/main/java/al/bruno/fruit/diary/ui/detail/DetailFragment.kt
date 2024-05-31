@@ -5,6 +5,7 @@ import al.bruno.fruit.diary.adapter.BindingData
 import al.bruno.fruit.diary.adapter.CustomListAdapter
 import al.bruno.fruit.diary.databinding.FragmentDetailsBinding
 import al.bruno.fruit.diary.databinding.FruitSingleItemBinding
+import al.bruno.fruit.diary.listener.OnItemClickListener
 import al.bruno.fruit.diary.listener.ViewOnClickListener
 import al.bruno.fruit.diary.model.Entries
 import al.bruno.fruit.diary.model.Fruit

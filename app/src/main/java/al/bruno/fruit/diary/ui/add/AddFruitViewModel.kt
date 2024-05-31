@@ -1,17 +1,11 @@
 package al.bruno.fruit.diary.ui.add
 
-import al.bruno.fruit.diary.R
-import al.bruno.fruit.diary.adapter.BindingData
-import al.bruno.fruit.diary.adapter.CustomListAdapter
 import al.bruno.fruit.diary.data.source.EntriesRepository
 import al.bruno.fruit.diary.data.source.FruitRepository
-import al.bruno.fruit.diary.databinding.AddFruitSingleItemBinding
-import al.bruno.fruit.diary.listener.OnItemClickListener
 import al.bruno.fruit.diary.model.Fruit
 import al.bruno.fruit.diary.util.ErrorHandler
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.recyclerview.widget.DiffUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*

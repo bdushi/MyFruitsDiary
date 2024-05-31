@@ -1,6 +1,6 @@
 package al.bruno.fruit.diary.ui.main
 
-import al.bruno.fruit.diary.di.ViewModelKey
+import al.bruno.fruit.diary.factory.ViewModelKey
 import al.bruno.fruit.diary.factory.ViewModelProviderFactory
 import al.bruno.fruit.diary.ui.about.AboutViewModel
 import al.bruno.fruit.diary.ui.add.AddFruitViewModel
